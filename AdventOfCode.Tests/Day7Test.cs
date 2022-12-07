@@ -937,7 +937,7 @@ $ cd tmw
 $ ls
 209116 pgqmwn";
             Assert.Equal(1427048, new Day7().Solve(inputReal));
-            Assert.Equal(1598, new Day7().SolvePart2(inputReal));
+            Assert.Equal(2940614, new Day7().SolvePart2(inputReal));
         }
     }
 }
