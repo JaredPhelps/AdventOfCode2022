@@ -7,7 +7,7 @@ namespace AdventOfCode.Tests
         [Fact]
         public void Test()
         {
-            Assert.Equal("CMZ", new Day5().Solve(@"    [D]    
+            Assert.Equal("MCD", new Day5().Solve(@"    [D]    
 [N] [C]    
 [Z] [M] [P]
  1   2   3 
@@ -35,7 +35,7 @@ move 1 from 1 to 2"));
         [Fact]
         public void TestReal()
         {
-            Assert.Equal("bleh", new Day5().Solve(@"                [V]     [C]     [M]
+            Assert.Equal("GNFBSBJLH", new Day5().Solve(@"                [V]     [C]     [M]
 [V]     [J]     [N]     [H]     [V]
 [R] [F] [N]     [W]     [Z]     [N]
 [H] [R] [D]     [Q] [M] [L]     [B]
