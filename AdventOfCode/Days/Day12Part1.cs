@@ -23,50 +23,58 @@ namespace AdventOfCode.Days
                 var sNode = startQueue.Dequeue();
                 var eNode = endQueue.Dequeue();
 
-                BfsStart(startQueue, sNode);
-                BfsEnd(endQueue, eNode);
+                bool findIntersection = BfsStart(startQueue, sNode) || BfsEnd(endQueue, eNode);
 
-                Node? intersection = map.Values.FirstOrDefault(n => n.IsTraversingFromEnd && n.IsTraversingFromStart);
-                if (intersection != null)
+                if (findIntersection)
                 {
-                    int steps = 0;
-                    Node cursor = intersection;
-                    while (cursor.StartParent != null)
+                    Node? intersection = map.Values.FirstOrDefault(n => n.IsTraversingFromEnd && n.IsTraversingFromStart);
+                    if (intersection != null)
                     {
-                        steps++;
-                        cursor = cursor.StartParent;
-                    }
+                        int steps = 0;
+                        Node cursor = intersection;
+                        while (cursor.StartParent != null)
+                        {
+                            steps++;
+                            cursor = cursor.StartParent;
+                        }
 
-                    cursor = intersection;
-                    while (cursor.EndParent != null)
-                    {
-                        steps++;
-                        cursor = cursor.EndParent;
+                        cursor = intersection;
+                        while (cursor.EndParent != null)
+                        {
+                            steps++;
+                            cursor = cursor.EndParent;
+                        }
+                        // return # steps.
+                        return steps;
                     }
-                    // return # steps.
-                    return steps;
                 }
             }
             throw new Exception("Not found.");
 
-            void BfsStart(Queue<Node> queue, Node parent)
+            bool BfsStart(Queue<Node> queue, Node parent)
             {
                 foreach (var neighbor in parent.StartNeighbors.Where(n => !n.IsTraversingFromStart))
                 {
                     neighbor.IsTraversingFromStart = true;
                     neighbor.StartParent = parent;
                     queue.Enqueue(neighbor);
+                    if (neighbor.IsTraversingFromEnd)
+                        return true;
                 }
+                return false;
             }
 
-            void BfsEnd(Queue<Node> queue, Node parent)
+            bool BfsEnd(Queue<Node> queue, Node parent)
             {
                 foreach (var neighbor in parent.EndNeighbors.Where(n => !n.IsTraversingFromEnd))
                 {
                     neighbor.IsTraversingFromEnd = true;
                     neighbor.EndParent = parent;
                     queue.Enqueue(neighbor);
+                    if (neighbor.IsTraversingFromStart)
+                        return true;
                 }
+                return false;
             }
         }
 

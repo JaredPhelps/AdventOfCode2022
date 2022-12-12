@@ -19,32 +19,36 @@ namespace AdventOfCode.Days
             {
                 var eNode = endQueue.Dequeue();
 
-                BfsEnd(endQueue, eNode);
-
-                Node? intersection = map.Values.FirstOrDefault(n => n.IsTraversingFromEnd && n.Height == 'a');
-                if (intersection != null)
+                if (BfsEnd(endQueue, eNode))
                 {
-                    int steps = 0;
-                    Node cursor = intersection;
-                    cursor = intersection;
-                    while (cursor.EndParent != null)
+                    Node? intersection = map.Values.First(n => n.IsTraversingFromEnd && n.Height == 'a');
+                    if (intersection != null)
                     {
-                        steps++;
-                        cursor = cursor.EndParent;
+                        int steps = 0;
+                        Node cursor = intersection;
+                        cursor = intersection;
+                        while (cursor.EndParent != null)
+                        {
+                            steps++;
+                            cursor = cursor.EndParent;
+                        }
+                        // return # steps.
+                        return steps;
                     }
-                    // return # steps.
-                    return steps;
                 }
             }
             throw new Exception("Not found.");
-            void BfsEnd(Queue<Node> queue, Node parent)
+            bool BfsEnd(Queue<Node> queue, Node parent)
             {
                 foreach (var neighbor in parent.EndNeighbors.Where(n => !n.IsTraversingFromEnd))
                 {
                     neighbor.IsTraversingFromEnd = true;
                     neighbor.EndParent = parent;
                     queue.Enqueue(neighbor);
+                    if (neighbor.Height == 'a')
+                        return true;
                 }
+                return false;
             }
         }
 
